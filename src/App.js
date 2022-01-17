@@ -6,17 +6,24 @@ import Container from "./components/Container";
 import Button from "./components/Button";
 import "./App.css";
 function App() {
-  const [formulario, handleChange] = useFormulario({
+  const [usuarios, setUsuarios] = useState([]);
+  const [formulario, handleChange, reset] = useFormulario({
     name: "",
     email: "",
-    lastName: "",
+    lastname: "",
   });
-  console.log(formulario);
+  const submit = (e) => {
+    e.preventDefault();
+    setUsuarios([...usuarios, formulario]);
+    reset();
+  };
+
+  console.log(formulario, usuarios);
   return (
     <Container>
       <Card>
         <div style={{ padding: 20 }}>
-          <form>
+          <form onSubmit={submit}>
             <Input
               label="Nombre"
               name="name"
@@ -25,8 +32,8 @@ function App() {
             />
             <Input
               label="Apellido"
-              name="lastName"
-              value={formulario.lastName}
+              name="lastname"
+              value={formulario.lastname}
               onChange={handleChange}
             />
             <Input
@@ -35,9 +42,19 @@ function App() {
               value={formulario.email}
               onChange={handleChange}
             />
-            <Button>Enviar</Button>
+            <input className="button" type="submit" value="Enviar" />
+            {/* <Button>Enviar</Button> */}
           </form>
         </div>
+      </Card>
+      <Card>
+        <ul>
+          {usuarios.map((usuario) => (
+            <li
+              key={usuario.email}
+            >{`${usuario.name} ${usuario.lastname} : ${usuario.email}`}</li>
+          ))}
+        </ul>
       </Card>
     </Container>
   );
